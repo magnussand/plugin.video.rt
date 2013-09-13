@@ -208,21 +208,21 @@ elif mode==18:
               match = re.compile('<dt class="(.+?)"(.+?)</dl>').findall(str(link))
               for classtype, classdata in match:
                  if "programm" in classtype:
-                    match = re.compile('<a href="(.+?)".+?class="header">(.+?)<.+?<img src="(.+?)".+?<dd>(.+?)<span class').findall(str(classdata))
-                    for pgurl,cattitle,imgurl,catdesc in match:
+                    match = re.compile('<a href="(.+?)".+?class="header">(.+?)<.+?<img src="(.+?)".+?<dd>(.+?)<span class="time">(.+?)<').findall(str(classdata))
+                    for pgurl,cattitle,imgurl,catdesc, cattime in match:
                      caturl = "plugin://plugin.video.rt/?url=http://rt.com"+pgurl+"&mode=19"
                      caticon = "http://rt.com"+imgurl
                      try:
-                        addLink(caturl.encode('utf-8'),str(cattitle),caticon,fanart,catdesc,"News","")
+                        addLink(caturl.encode('utf-8'),str(cattitle),caticon,fanart,cattime+"\n"+catdesc,"News","")
                      except:
                         log("RT -- Problem adding directory")
                  else:
-                    match = re.compile('<a href="(.+?)".+?<img src="(.+?)".+class="header">(.+?)</a>.+?<p>(.+?)</p>').findall(str(classdata))
-                    for pgurl,imgurl, cattitle,catdesc in match:
+                    match = re.compile('<a href="(.+?)".+?<img src="(.+?)".+class="header">(.+?)</a>.+?<p>(.+?)</p.+?class="time">(.+?)<').findall(str(classdata))
+                    for pgurl,imgurl, cattitle,catdesc, cattime in match:
                      caturl = "plugin://plugin.video.rt/?url=http://rt.com"+pgurl+"&name="+str(cattitle)+"&mode=19"
                      caticon = "http://rt.com"+imgurl
                      try:
-                        addLink(caturl.encode('utf-8'),str(cattitle),caticon,fanart,catdesc,"News","")
+                        addLink(caturl.encode('utf-8'),str(cattitle),caticon,fanart,cattime+"\n"+catdesc,"News","")
                      except:
                         log("RT -- Problem adding directory")
 
