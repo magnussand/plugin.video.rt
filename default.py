@@ -249,7 +249,7 @@ elif mode==19:
                 if "comhttp:" in vidurl:
                   vidurl = vidurl.replace("http://rt.com","")
                 item = xbmcgui.ListItem(path=vidurl.encode('utf-8'), iconImage="DefaultVideo.png", thumbnailImage=icon)
-                item.setInfo( type="Video", infoLabels={ "Title": name, "Plot": viddesc} )
+                item.setInfo( type="Video", infoLabels={ "Title": name, "Plot": viddesc } )
                 item.setProperty("IsPlayable","true")
                 xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
               
