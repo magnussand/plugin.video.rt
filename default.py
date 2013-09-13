@@ -241,16 +241,16 @@ elif mode==19:
                  link1 = ""
               link=str(link1).replace('\n','')
 
-              match = re.compile('<div class="video_block".+?"thumbnailUrl" content="(.+?)".+?"contentURL" content="(.+?)".+?"description" content="(.+?)"').findall(str(link))
+              match = re.compile('<span class="time">(.+?)<.+?<div class="video_block".+?"thumbnailUrl" content="(.+?)".+?"contentURL" content="(.+?)".+?<p>(.+?)</p>').findall(str(link))
               if not match:
                  dialog = xbmcgui.Dialog()
                  dialog.ok("Russia Today News", '', 'No Playable Video Found')
               else:
-               for icon,vidurl,viddesc in match:
+               for viddate,icon,vidurl,viddesc in match:
                 if "comhttp:" in vidurl:
                   vidurl = vidurl.replace("http://rt.com","")
                 item = xbmcgui.ListItem(path=vidurl.encode('utf-8'), iconImage="DefaultVideo.png", thumbnailImage=icon)
-                item.setInfo( type="Video", infoLabels={ "Title": name, "Plot": viddesc } )
+                item.setInfo( type="Video", infoLabels={ "Title": name, "Plot": viddate+"\n"+viddesc } )
                 item.setProperty("IsPlayable","true")
                 xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
               
