@@ -88,6 +88,7 @@ def getSources():
               except:
                  link1 = ""
 
+              addLink("rtmp://rt.fms-04.visionip.tv/live/rt-global-live-HD","Live",icon,fanart,"Live HD Stream","News","",False)
               link=str(link1).replace('\n','')     
               match=re.compile('<ul class="nav-extra">(.+?)</ul>').findall(str(link))
               for catblock in match:
