@@ -12,9 +12,10 @@ import xbmcgui
 import xbmcaddon
 import xbmcvfs
 import cgi
+from StringIO import StringIO
+import gzip
 
 USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'
-
 addon         = xbmcaddon.Addon('plugin.video.rt')
 __addonname__ = addon.getAddonInfo('name')
 home          = addon.getAddonInfo('path').decode('utf-8')
@@ -72,22 +73,36 @@ def demunge(munge):
 
 
 
-
+def getRequest(url):
+              log("RT - getRequest URL: "+str(url))
+              req = urllib2.Request(url.encode('utf-8'))
+              req.add_header('User-Agent', USER_AGENT)
+              req.add_header('Accept',"text/html")
+              req.add_header('Accept-Encoding', None )
+              req.add_header('Accept-Encoding', 'deflate,sdch')
+              req.add_header('Accept-Language', 'en-US,en;q=0.8')
+              req.add_header('Cookie','hide_ce=true')
+              log("RT -- request headers = "+str(req.header_items()))
+              try:
+                 response = urllib2.urlopen(req)
+                 if response.info().getheader('Content-Encoding') == 'gzip':
+                    log("RT -- Content Encoding == 'gzip")
+                    buf = StringIO( response.read())
+                    f = gzip.GzipFile(fileobj=buf)
+                    link1 = f.read()
+                 else:
+                    link1=response.read()
+                 response.close()
+              except:
+                 link1 = ""
+              return(link1)
 
 
 
 def getSources():
 
               log("RT -- RT Live main page")
-              req = urllib2.Request("http://www.rt.com/shows")
-              req.add_header('User-Agent', USER_AGENT)
-              try:
-                 response = urllib2.urlopen(req)
-                 link1=response.read()
-                 response.close()
-              except:
-                 link1 = ""
-
+              link1 = getRequest("http://rt.com/shows/")
               addLink("rtmp://rt.fms-04.visionip.tv/live/rt-global-live-HD","Live",icon,fanart,"Live HD Stream","News","",False)
               link=str(link1).replace('\n','')     
               match=re.compile('<ul class="nav-extra">(.+?)</ul>').findall(str(link))
@@ -195,15 +210,7 @@ elif mode==13:
 elif mode==18:
               log("RT -- Processing RT sub category item")
               url = "http://rt.com"+url
-              req = urllib2.Request(url.encode('utf-8'))
-              log("RT -- req === "+str(req))
-              req.add_header('User-Agent', USER_AGENT)
-              try:
-                 response = urllib2.urlopen(req)
-                 link1=response.read()
-                 response.close()
-              except:
-                 link1 = ""
+              link1 = getRequest(url)
               link=str(link1).replace('\n','')
 
               match = re.compile('<dt class="(.+?)"(.+?)</dl>').findall(str(link))
@@ -230,15 +237,7 @@ elif mode==18:
  
 elif mode==19:
               log("RT -- Processing RT play category item")
-              req = urllib2.Request(url.encode('utf-8'))
-              log("RT -- req === "+str(req))
-              req.add_header('User-Agent', USER_AGENT)
-              try:
-                 response = urllib2.urlopen(req)
-                 link1=response.read()
-                 response.close()
-              except:
-                 link1 = ""
+              link1=getRequest(url)
               link=str(link1).replace('\n','')
 
               match = re.compile('<span class="time">(.+?)<.+?<div class="video_block".+?"thumbnailUrl" content="(.+?)".+?"contentURL" content="(.+?)".+?<p>(.+?)</p>').findall(str(link))
