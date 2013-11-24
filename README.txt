@@ -19,3 +19,5 @@ version 1.7.1 added program icons and multiple pages
 version 1.8.0 added rt live global, america, documentary, espanol, arabic
 
 version 1.8.2 added autoplay of Rt Global
+
+version 1.8.3 minor change to addon.xml
