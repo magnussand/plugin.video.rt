@@ -22,10 +22,6 @@ version 1.8.2 added autoplay of Rt Global
 
 version 1.8.4 minor change to addon.xml
 
-<<<<<<< HEAD
 version 1.9.0 minor change to fix icons images
 
 version 1.9.1 added xml header to settings.xml and changed language sub-dir to "English"
-=======
-version 1.9.0 minor change to fix icons images
->>>>>>> 28df9aade4fe957a05ba6a1065b052e2e3a522e6
