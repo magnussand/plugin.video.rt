@@ -74,19 +74,20 @@ def getShows():
 
 def getLive():
     ilist=[]
-    rlist = [("http://rt-a.akamaihd.net/ch_01@325605/%s.m3u8", __language__(30005)),
-             ("http://rt-a.akamaihd.net/ch_04@325608/%s.m3u8", __language__(30006)),
-             ("http://rt-a.akamaihd.net/ch_05@325609/%s.m3u8", __language__(30007)),
-             ("http://rt-a.akamaihd.net/ch_06@325610/%s.m3u8", __language__(30008)),
-             ("http://rt-a.akamaihd.net/ch_02@325606/%s.m3u8", __language__(30009)),
-             ("http://rt-a.akamaihd.net/ch_03@325607/%s.m3u8", __language__(30010))]
+    rlist = [("http://rt-eng-live.hls.adaptive.level3.net/rt/eng/%s.m3u8", __language__(30005)),
+             ("http://rt-usa-live.hls.adaptive.level3.net/rt/usa/%s.m3u8", __language__(30006)),
+             ("http://rt-doc-live.hls.adaptive.level3.net/rt/doc/%s.m3u8", __language__(30007)),
+             ("http://rt-uk-live.hls.adaptive.level3.net/rt/uk/%s.m3u8", __language__(30008)),
+             ("http://rt-esp-live.hls.adaptive.level3.net/rt/esp/%s.m3u8", __language__(30009)),
+             ("http://rt-ara-live.hls.adaptive.level3.net/rt/ara/%s.m3u8", __language__(30010))]
     res_names = ["Auto","720p","480p","320p","240p"]
+    res_paths = ["index","index2500","index1600","index800","index400"]
     i = int(addon.getSetting('rt_res'))
     res = res_names[i]
-    if res == "Auto": res = "master"
     res_str = res_names[i]
+    res_path = res_paths[i]
     for url, name in rlist:
-       url = url % res
+       url = url % res_path
        name = '%s%s' % (name, res_str)    
        liz=xbmcgui.ListItem(name, '',icon, None)
        liz.setProperty('fanart_image', addonfanart)
